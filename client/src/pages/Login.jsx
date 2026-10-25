@@ -24,9 +24,9 @@ export default function Login() {
           <Field label="Password"><input type="password" required value={password} onChange={(e) => setPassword(e.target.value)} /></Field>
           <button className="btn" style={{ width: '100%' }} disabled={busy}>{busy ? 'Logging in…' : 'Log in'}</button>
           <p className="sub">New here? <Link to="/register">Create an employee account</Link></p>
-          <div className="demo">Demo accounts (click to fill)
+          {import.meta.env.DEV && <div className="demo">Demo accounts (click to fill)
             {DEMOS.map(([r, e, p]) => <button type="button" key={r} onClick={() => { setEmail(e); setPassword(p); }}><b>{r}</b> · {e}</button>)}
-          </div>
+          </div>}
         </form>
       </div>
     </div>
