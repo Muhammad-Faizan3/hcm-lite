@@ -45,6 +45,20 @@ Other employees: hamza@, fatima@, usman@hcm.com (same password as Sara). Change 
 
 Separate hosting (frontend on Vercel, backend on Render) also works: set `VITE_API_URL=https://<backend>/api` when building the client.
 
+## Deploy frontend and API together on Vercel
+
+The repository includes a Vercel serverless API entry point. Import the repository into Vercel with the project root set to the repository root; `vercel.json` installs the server/client dependencies, builds the Vite frontend, routes `/api/*` to the Express API function, and serves the client for other paths.
+
+Before the first production deployment, add these server environment variables in Vercel Project Settings (do not commit them or paste them into source files):
+
+- `MONGO_URI`: MongoDB Atlas connection string for a dedicated application database user with only the required database permissions.
+- `JWT_SECRET`: unique cryptographically random value with at least 32 characters.
+- `INITIAL_ADMIN_NAME`, `INITIAL_ADMIN_EMAIL`, `INITIAL_ADMIN_PASSWORD`: one-time admin bootstrap values; password must be at least 16 characters. Remove these three variables after the first successful API request creates the administrator.
+- `NODE_ENV=production`
+- `ANTHROPIC_API_KEY` is optional.
+
+Configure MongoDB Atlas network access so Vercel can reach the cluster. Do not use local MongoDB addresses. Production demo seeding is disabled. Keep Vercel environment values private; never add `.env` files to Git.
+
 ## Roles and permissions
 
 | Feature | Admin | HR | Employee |

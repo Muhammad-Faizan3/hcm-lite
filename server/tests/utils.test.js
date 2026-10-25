@@ -3,6 +3,7 @@ const assert = require('node:assert');
 const { weekdaysBetween, weekdaysInMonth, computeNet } = require('../src/utils');
 const { fallbackParse, looksLikeLeave } = require('../src/services/ai');
 const { validateJwtSecret, requireAccountPassword, shouldSeedDemoData, initialAdminFromEnv } = require('../src/config');
+const apiHandler = require('../src/vercel-handler');
 
 test('JWT secrets must be unique and sufficiently long', () => {
   assert.throws(() => validateJwtSecret('change-me-to-a-long-random-string'), /JWT_SECRET/);
@@ -28,6 +29,10 @@ test('initial admin bootstrap requires complete credentials and a long password'
   assert.deepStrictEqual(initialAdminFromEnv({ INITIAL_ADMIN_NAME: ' Admin ', INITIAL_ADMIN_EMAIL: 'ADMIN@example.test', INITIAL_ADMIN_PASSWORD: 'a-secure-test-password' }), {
     name: 'Admin', email: 'admin@example.test', password: 'a-secure-test-password',
   });
+});
+
+test('Vercel API entry point is an async handler', () => {
+  assert.strictEqual(typeof apiHandler, 'function');
 });
 
 test('weekdays exclude weekends', () => {
